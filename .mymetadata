@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="SshFlower"
+  id="myeclipse.1488374904057"
+  context-root="/SshFlower"
+  j2ee-spec="6.0"
+  archive="SshFlower.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

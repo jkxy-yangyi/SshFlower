@@ -1,0 +1,62 @@
+@CHARSET "UTF-8";
+
+body {
+	margin: 0px;
+	padding: 0px;
+	text-align: center; /*  页面居中 */
+}
+
+.content {   /* 页面主要内容 */
+	clear:both;
+	margin:20px auto;
+	width: 1220px;
+	padding-top: 30px;
+	text-align: center;
+}
+
+.left {
+	margin-left:0px;
+	padding-left: 60px;
+	width:100px;
+	float: left;
+	text-align: left;
+}
+
+.right {
+	float: left;
+	margin-left: 100px;
+	width:888px;
+	text-align: center;
+	
+}
+
+.head_left{ /*  头部左 */
+float: left;	
+margin-left: 100px;	
+}
+
+.head_right{	/* 头部右 */
+float: right;	
+padding-top: 100px;	
+padding-right: 200px;
+}
+
+.foot {	/* 脚部 */
+	clear: both;
+	padding: 20px;
+}
+
+.newflower { /*  新品花种的样式 */
+	float: left;
+	border: #9ca5cc 1px solid ;
+	padding: 0px;
+	margin:0px;
+	width: 220px;
+}
+
+.flowercheck {	/* 处理购物车的样式 */
+	float: left;	
+	padding: 0px;
+	margin:0px;
+	width: 220px;
+}

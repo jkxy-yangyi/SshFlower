@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+<!-- 定义数据源Bean，使用C3P0数据源实现，并注入数据源的必要信息 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close"
+		p:driverClass="com.mysql.jdbc.Driver"
+		p:jdbcUrl="jdbc:mysql://localhost:3306/jkxyshsflower?useUnicode=true&amp;characterEncoding=utf-8"
+		p:user="root"
+		p:password="mysql"
+		p:maxPoolSize="40"
+		p:minPoolSize="2"
+		p:initialPoolSize="2"
+		p:maxIdleTime="30"/>
+		<!-- <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/jkxyshsflower?useUnicode=true&amp;characterEncoding=utf-8">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="mysql"></property> -->
+	<!-- 定义Hibernate 的SessionFactory, SessionFactory需要依赖数据源，注入dataSource -->
+	<bean id="sessionFactory" 
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
+		p:dataSource-ref="dataSource">
+		<property name="mappingResources">
+			<list>
+				<value>com/jkxy/model/Flower.hbm.xml</value>
+				<value>com/jkxy/model/Guashi.hbm.xml</value>
+				<value>com/jkxy/model/Orderitem.hbm.xml</value>
+				<value>com/jkxy/model/Orders.hbm.xml</value>
+				<value>com/jkxy/model/Userdetail.hbm.xml</value>
+				<value>com/jkxy/model/Catalog.hbm.xml</value>
+				<value>com/jkxy/model/User.hbm.xml</value></list>
+		</property>
+		<!-- 定义Hibernate  SessionFactory的属性 -->
+		<property name="hibernateProperties">
+			<props>
+				<!-- 指定 Hibernate连接方言-->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<!-- 是否根据Hibernate映射创建数据表-->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		
+		</bean>
+		
+	
+		<!-- 分类和鲜花 -->
+		<bean id="catalogDAO" class="com.jkxy.dao.impl.CatalogDAO">
+		<property name="sessionfactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="catalogService" class="com.jkxy.service.impl.CatalogService">
+		<property name="catalogDAO" ref="catalogDAO"></property>
+	</bean>
+	
+	<bean id="flowerDAO" class="com.jkxy.dao.impl.FlowerDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="flowerService" class="com.jkxy.service.impl.FlowerService">
+		<property name="flowerDAO" ref="flowerDAO"></property>
+	</bean>
+	<bean id="flowerAction" class="com.jkxy.action.FlowerAction">
+		<property name="catalogService" ref="catalogService"></property>
+		<property name="flowerService" ref="flowerService"></property>
+	</bean>
+	
+	<!-- 用户 -->
+	<bean id="userDAO" class="com.jkxy.dao.impl.UserDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="userService" class="com.jkxy.service.impl.UserService">
+		<property name="userDAO" ref="userDAO"></property>
+	</bean>
+	<bean id="userAction" class="com.jkxy.action.UserAction">
+		<property name="userService" ref="userService"></property>
+	</bean>
+	
+	<!-- 购物车 -->
+	<bean id="shoppingAction" class="com.jkxy.action.ShoppingAction">
+		<property name="flowerService" ref="flowerService">
+		</property>
+
+	</bean>
+	
+	<bean id="orerDAO" class="com.jkxy.dao.impl.OrderDAO">
+		<property name="sessionFacory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="orderService" class="com.jkxy.service.impl.OrderService">
+		<property name="orderDAO" ref="orerDAO"></property>
+	</bean>
+	<bean id="orderAction" class="com.jkxy.action.OrderAction">
+		<property name="orderService" ref="orderService"></property>
+	</bean>
+	
+	</beans>
